@@ -124,8 +124,6 @@ class GetAllSongs(APIView):
             }
             data.append(new_song)
         # Check if there is data in the database and return a corresponding data and message
-        
-        print(data)
         if len(data) == 0:
             return JsonResponse({'status': 'success', 'message': 'No songs in the database'}, status=status.HTTP_200_OK, safe=False) 
         else:   
@@ -152,6 +150,26 @@ class GetSingleSong(APIView):
         except IndexError:
             # If song with the given ID does not exist, return an error with a message
             return JsonResponse({'status': 'error', 'message': 'Song does not exist'}, status=status.HTTP_403_FORBIDDEN, safe=False) 
+
+class UpdateSong(APIView):
+    def put(self, request, *args, **kwargs):
+        # Get song ID from request parameter
+        song_id = self.kwargs['song_id']
+        
+        # Search the database if artiste with given ID exists
+        try:
+            song = Song.objects.get(id=song_id)
+            if 'title' in request.data:
+                song.title = request.data['title']
+            if 'date_released' in request.data:
+                song.date_released = request.data['date_released']
+            song.save()
+            # Return a success message after updating the song
+            return JsonResponse({'status': 'success', 'message': 'Song updated successfully'}, status=status.HTTP_200_OK, safe=False) 
+        except Song.DoesNotExist:
+            # If song with the given ID does not exist, return an error with a message
+            return JsonResponse({'status': 'error', 'message': 'Song does not exist'}, status=status.HTTP_403_FORBIDDEN, safe=False) 
+        
 
 class AddLyrics(APIView):
     def post(self, request, *args, **kwargs):

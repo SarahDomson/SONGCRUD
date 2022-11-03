@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import AddArtiste, DeleteArtiste, GetAllArtistes, GetAllSongs, GetSingleSong, \
-DeleteSong, AddLyrics, AddSongs, UpdateArtiste, GetAllLyrics
+DeleteSong, AddLyrics, AddSongs, UpdateArtiste, GetAllLyrics, UpdateSong
 
 
 urlpatterns = [
@@ -14,4 +14,5 @@ urlpatterns = [
     path('add-lyrics/<int:song_id>/', AddLyrics.as_view(), name="Add lyrics"),
     path('add-song/<int:artiste_id>/', AddSongs.as_view(), name="Add Songs"),
     path('update-artiste/<int:artiste_id>/', UpdateArtiste.as_view(), name="Update Artiste"),
+    path('update-song/<int:song_id>/', UpdateSong.as_view(), name="Update Song"),
 ]
